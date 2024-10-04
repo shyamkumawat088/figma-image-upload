@@ -9,8 +9,8 @@ Narad is a Figma plugin that allows you to export selected nodes as PNG or SVG a
 1. Clone the repository or download the source code.
 2. Open Figma and go to `Plugins` > `Development` > `New Plugin`.
 3. Choose `Link existing plugin` and select the `manifest.json` file from this project.
-4. update the auth-token in ui.html
-5. update the upload-url in ui.html
+4. update the `<auth-token>` in ui.html
+5. update the `<upload-url>` in ui.html
 
 ## Usage
 
