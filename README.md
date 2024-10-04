@@ -23,7 +23,6 @@ Narad is a Figma plugin that allows you to export selected nodes as PNG or SVG a
 - `code.js`: Main plugin code that handles the export and upload logic.
 - `manifest.json`: Plugin manifest file that defines the plugin's metadata.
 - `ui.html`: HTML file for the plugin's user interface.
-- `README.md`: This file.
 
 ## Development
 
