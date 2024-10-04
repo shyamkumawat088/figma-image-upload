@@ -1,0 +1,9 @@
+{
+  "name": "Narad - Figma to Cloud Plugin",
+  "id": "figma-to-cloud-plugin",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"],
+  "permissions": ["currentuser"]
+}

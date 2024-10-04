@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Image Upload Plugin</title>
+  </head>
+  <body style="font-family: sans-serif">
+    <select name="image-type" id="image-type">
+      <option value="svg">SVG</option>
+      <option value="png">PNG</option>
+    </select>
+    <button id="exportButton">Get the selected image</button>
+    <br />
+    <br />
+    Output URL:
+    <br />
+    <p id="output" style="background-color: powderblue"></p>
+
+    <script>
+      document.getElementById("exportButton").onclick = () => {
+        console.log("window ::", window.navigator.clipboard);
+        const selectedType = document.getElementById("image-type").value;
+        parent.postMessage(
+          { pluginMessage: { type: "export-image", selectedType } },
+          "*"
+        );
+      };
+
+      // Handle messages from the plugin code
+      onmessage = async (event) => {
+        const message = event.data.pluginMessage;
+        if (message.type === "upload-success") {
+          const formData = new FormData();
+          const selectedType = document.getElementById("image-type").value;
+          let blob;
+
+          // Prepare blob based on selected type
+          if (selectedType === "svg") {
+            // Use SVG data directly
+            blob = new Blob([message.svgData], { type: "image/svg+xml" });
+            formData.append("upload", blob, "image.svg"); // Provide a filename for SVG
+          } else if (selectedType === "png") {
+            // Convert PNG data to Blob
+            const pngDataUrl = `data:image/png;base64,${message.pngData}`;
+            const response = await fetch(pngDataUrl);
+            blob = await response.blob();
+            formData.append("upload", blob, "image.png"); // Provide a filename for PNG
+          }
+
+          // Make the API request to upload the selected image
+          const response = await fetch("<upload-url>", {
+            method: "POST",
+            body: formData,
+            headers: {
+              Authorization: "Bearer <auth-token>",
+            },
+          });
+
+          const res = await response.json();
+          document.getElementById("output").innerText = `${res.url}`;
+        } else if (message.type === "error") {
+          document.getElementById(
+            "output"
+          ).innerText = `Error: ${message.message}`;
+        }
+      };
+    </script>
+  </body>
+</html>
